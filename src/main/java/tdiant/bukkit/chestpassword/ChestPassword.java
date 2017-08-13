@@ -22,7 +22,7 @@ public class ChestPassword extends JavaPlugin implements Listener {
         plugin=this;
         //
         checkVersion();
-        ConnectWithOtherLockChestPlugin.checkOtherPlugin();
+        //ConnectWithOtherLockChestPlugin.checkOtherPlugin();
         if(DISABLE_TAG) return;
 
         ConfigManager.reloadConfig();
@@ -65,7 +65,7 @@ public class ChestPassword extends JavaPlugin implements Listener {
     private void checkVersion(){
         if(!ServerVersionCheck.isCorrectVersion()){
             Bukkit.getPluginManager().disablePlugin(this);
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"您的服务器不支持 ChestPassword 1.1 版本，插件已经自动卸载！");
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"您的服务器不支持 ChestPassword 1.2 版本，插件已经自动卸载！");
             DISABLE_TAG=true;
         }
     }
