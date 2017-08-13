@@ -1,0 +1,4 @@
+name: ChestPassword
+main: tdiant.bukkit.chestpassword.ChestPassword
+version: 1
+author: tdiant
