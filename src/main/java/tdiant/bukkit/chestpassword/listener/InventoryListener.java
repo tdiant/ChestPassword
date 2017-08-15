@@ -135,7 +135,6 @@ public class InventoryListener implements Listener {
                     if(ChestPasswordManager.isTrulyChestPasswordInput(b,PlayerInputManager.getPlayerInput(p),PlayerInputManager.getPlayerInputZero(p))){
                         if(ChestPasswordManager.isChest(b)){
                             Chest chest=(Chest)b.getState();
-                            System.out.println(chest.getBlockInventory().getHolder().getInventory());
                             if(chest.getBlockInventory().getHolder().getInventory() instanceof DoubleChestInventory){
                                 p.openInventory(chest.getBlockInventory().getHolder().getInventory());
                             }else {

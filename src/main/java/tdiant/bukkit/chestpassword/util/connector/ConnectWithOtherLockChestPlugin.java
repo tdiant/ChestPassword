@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 public class ConnectWithOtherLockChestPlugin {
     public static void checkOtherPlugin(){
         if(true) return;
-        
+
         new BukkitRunnable(){
             @Override
             public void run() {

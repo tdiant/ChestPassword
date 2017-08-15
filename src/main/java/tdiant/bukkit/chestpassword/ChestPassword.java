@@ -2,19 +2,17 @@ package tdiant.bukkit.chestpassword;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import tdiant.bukkit.chestpassword.listener.BlockListener;
 import tdiant.bukkit.chestpassword.listener.InventoryListener;
 import tdiant.bukkit.chestpassword.manager.ConfigManager;
 import tdiant.bukkit.chestpassword.manager.DataManager;
 import tdiant.bukkit.chestpassword.util.ServerVersionCheck;
-import tdiant.bukkit.chestpassword.util.connector.ConnectWithOtherLockChestPlugin;
 
 /**
  * Created by tdiant on 2017/7/25.
  */
-public class ChestPassword extends JavaPlugin implements Listener {
+public class ChestPassword extends JavaPlugin {
     public static ChestPassword plugin=null;
     private static boolean DISABLE_TAG=false;
 
@@ -39,7 +37,6 @@ public class ChestPassword extends JavaPlugin implements Listener {
     private void registerListener(){
         Bukkit.getPluginManager().registerEvents(new InventoryListener(),this);
         Bukkit.getPluginManager().registerEvents(new BlockListener(),this);
-        Bukkit.getPluginManager().registerEvents(this,this);
     }
 
     private void setSqlite(boolean b){
@@ -65,7 +62,7 @@ public class ChestPassword extends JavaPlugin implements Listener {
     private void checkVersion(){
         if(!ServerVersionCheck.isCorrectVersion()){
             Bukkit.getPluginManager().disablePlugin(this);
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"您的服务器不支持 ChestPassword 1.2 版本，插件已经自动卸载！");
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"您的服务器不支持 ChestPassword 1.3 版本，插件已经自动卸载！");
             DISABLE_TAG=true;
         }
     }

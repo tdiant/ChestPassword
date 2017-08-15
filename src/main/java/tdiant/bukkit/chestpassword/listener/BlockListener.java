@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import tdiant.bukkit.chestpassword.gui.PasswordInputGui;
 import tdiant.bukkit.chestpassword.manager.ChestPasswordManager;
@@ -171,5 +172,13 @@ public class BlockListener implements Listener {
 
     public static boolean canPlayerUse(Player p){
         return p.hasPermission("chestpassword.use");
+    }
+
+    @EventHandler
+    public void antiHopperMove(InventoryMoveItemEvent e){
+        Block fromB = e.getSource().getLocation().getBlock();
+        if(ChestPasswordManager.isChest(fromB) &&ChestPasswordManager.isChestSetPassword(fromB)){
+            e.setCancelled(true);
+        }
     }
 }
