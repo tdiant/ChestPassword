@@ -4,12 +4,18 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import tdiant.bukkit.chestpassword.ChestPassword;
 
+import java.io.IOException;
+
 /**
  * Created by tdiant on 2017/7/27.
  */
 public class ConfigManager {
-    public static void reloadConfig(){
+    public static void reloadConfig() throws IOException {
         ChestPassword.plugin.saveDefaultConfig();
+        //默认语言文件
+        ChestPassword.plugin.saveResource("lang/zh_cn.yml",false);
+        ChestPassword.plugin.saveResource("lang/en_us.yml",false);
+
         ChestPassword.plugin.reloadConfig();
         ChestPassword.plugin.getConfig();
     }

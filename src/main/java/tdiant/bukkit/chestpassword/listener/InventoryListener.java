@@ -15,7 +15,9 @@ import org.bukkit.inventory.ItemStack;
 import tdiant.bukkit.chestpassword.gui.PasswordInputGui;
 import tdiant.bukkit.chestpassword.manager.ChestPasswordManager;
 import tdiant.bukkit.chestpassword.manager.ConfigManager;
+import tdiant.bukkit.chestpassword.manager.LanguageManager;
 import tdiant.bukkit.chestpassword.manager.PlayerInputManager;
+import tdiant.bukkit.chestpassword.util.GUINumberTool;
 import tdiant.bukkit.chestpassword.util.base.PlayerStateCard;
 import tdiant.bukkit.chestpassword.util.connector.ConnectWithOtherLockChestPlugin;
 
@@ -28,7 +30,7 @@ public class InventoryListener implements Listener {
         if(e.getInventory().getTitle().contains(PasswordInputGui.TITLE)) {
             Player p=(Player)e.getPlayer();
             if(!BlockListener.canPlayerUse(p)) {
-                p.sendMessage(ChatColor.RED+"您没有权限使用箱子锁！");
+                p.sendMessage(ChatColor.RED+ LanguageManager.get("inventory_step_no_permission",true));
                 e.setCancelled(true);
                 return;
             }
@@ -64,11 +66,11 @@ public class InventoryListener implements Listener {
             return;
 
         ItemStack item=e.getCurrentItem();
-        int num=PasswordInputGui.getButtonNum(item);
+        int num= GUINumberTool.getButtonNum(item);
         Player p = (Player) e.getWhoClicked();
 
         if(!BlockListener.canPlayerUse(p)) {
-            p.sendMessage(ChatColor.RED+"您没有权限使用箱子锁！");
+            p.sendMessage(ChatColor.RED+ LanguageManager.get("inventory_step_no_permission",true));
             e.setCancelled(true);
             p.closeInventory();
             return;
@@ -87,7 +89,7 @@ public class InventoryListener implements Listener {
             PasswordInputGui.show(p,233,233);
             if (PlayerInputManager.getPlayerInput(p) > 999999999) {
                 p.closeInventory();
-                p.sendMessage(ChatColor.RED + "您输入的密码过长，请重新输入！");
+                p.sendMessage(ChatColor.RED + LanguageManager.get("inventory_step_too_long_password",true));
                 PlayerInputManager.clearPlayerInput(p);
                 return;
             }
@@ -106,14 +108,14 @@ public class InventoryListener implements Listener {
                     Block b=psc.getBlock();
                     //兼容性检测
                     if(ConnectWithOtherLockChestPlugin.isNeedCancelled(b)){
-                        p.sendMessage(ChatColor.RED+"这个箱子不允许设置GUI密码锁！");
+                        p.sendMessage(ChatColor.RED+LanguageManager.get("inventory_step_set_cannot_set",true));
                         PlayerInputManager.clearPlayerInput(p);
                         PlayerInputManager.clearPlayerState(p);
                         return;
                     }
 
                     if(ChestPasswordManager.isChestSetPassword(b)){
-                        p.sendMessage(ChatColor.RED+"设置失败！这个箱子已经设置过密码了，不能重复设置！");
+                        p.sendMessage(ChatColor.RED+LanguageManager.get("inventory_step_set_wrong_already",true));
                         PlayerInputManager.clearPlayerInput(p);
                         PlayerInputManager.clearPlayerState(p);
                         return;
@@ -122,8 +124,8 @@ public class InventoryListener implements Listener {
                         String newPassword="";
                         if(PlayerInputManager.getPlayerInput(p)>0) newPassword=""+PlayerInputManager.getPlayerInput(p);
                         for(int i=1;i<=PlayerInputManager.getPlayerInputZero(p);i++) newPassword="0"+newPassword;
-                        if(newPassword.trim().equalsIgnoreCase("")) newPassword="空密码";
-                        p.sendMessage(ChatColor.GREEN + "设置成功！您设置的密码是 " + newPassword + " ，请您牢记！");
+                        if(newPassword.trim().equalsIgnoreCase("")) newPassword=LanguageManager.get("gui_emptyPassword");
+                        p.sendMessage(ChatColor.GREEN + LanguageManager.get("inventory_step_set_success",true).replace("@password",newPassword));
                         PlayerInputManager.clearPlayerInput(p);
                         PlayerInputManager.clearPlayerState(p);
                     }
@@ -157,11 +159,11 @@ public class InventoryListener implements Listener {
                                 }
                                 PlayerInputManager.clearPlayerInput(p);
                                 PlayerInputManager.clearPlayerState(p);
-                                p.sendMessage(ChatColor.GREEN+"您已用OP权限暴力打开了上锁的箱子。");
+                                p.sendMessage(ChatColor.GREEN+LanguageManager.get("inventory_step_open_by_op_permission",true));
                                 return;
                             }
                         }
-                        p.sendMessage(ChatColor.RED+"密码错误，无法打开！请您重新尝试！");
+                        p.sendMessage(ChatColor.RED+LanguageManager.get("inventory_step_open_wrong_wrong_password",true));
                         PlayerInputManager.clearPlayerInput(p);
                         PlayerInputManager.clearPlayerState(p);
                         return;
@@ -174,7 +176,7 @@ public class InventoryListener implements Listener {
                     if(!ChestPasswordManager.isChestSetPassword(b)) return;
                     if(ChestPasswordManager.isTrulyChestPasswordInput(b,PlayerInputManager.getPlayerInput(p),PlayerInputManager.getPlayerInputZero(p))){
                         ChestPasswordManager.removeChestPassword(b);
-                        p.sendMessage(ChatColor.GREEN+"清除成功！");
+                        p.sendMessage(ChatColor.GREEN+LanguageManager.get("inventory_step_remove_successfully",true));
                         PlayerInputManager.clearPlayerInput(p);
                         PlayerInputManager.clearPlayerState(p);
                     }else{
@@ -188,7 +190,7 @@ public class InventoryListener implements Listener {
                                 return;
                             }
                         }
-                        p.sendMessage(ChatColor.RED+"密码错误，清除失败！");
+                        p.sendMessage(ChatColor.RED+LanguageManager.get("inventory_step_remove_wrong_wrong_password",true));
                         PlayerInputManager.clearPlayerInput(p);
                         PlayerInputManager.clearPlayerState(p);
                     }

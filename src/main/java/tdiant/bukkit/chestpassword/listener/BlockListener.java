@@ -15,6 +15,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import tdiant.bukkit.chestpassword.gui.PasswordInputGui;
 import tdiant.bukkit.chestpassword.manager.ChestPasswordManager;
 import tdiant.bukkit.chestpassword.manager.ConfigManager;
+import tdiant.bukkit.chestpassword.manager.LanguageManager;
 import tdiant.bukkit.chestpassword.manager.PlayerInputManager;
 import tdiant.bukkit.chestpassword.util.base.PlayerStateCard;
 
@@ -27,7 +28,7 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent e) throws NoSuchFieldException, IllegalAccessException {
         if(!canPlayerUse(e.getPlayer())) {
-            e.getPlayer().sendMessage(ChatColor.RED+"您没有权限使用箱子锁！");
+            e.getPlayer().sendMessage(ChatColor.RED+ LanguageManager.get("inventory_step_no_permission",true));
             e.setCancelled(true);
             return;
         }
@@ -39,7 +40,7 @@ public class BlockListener implements Listener {
         Player p=e.getPlayer();
 
         if(!canPlayerUse(p)) {
-            p.sendMessage(ChatColor.RED+"您没有权限使用箱子锁！");
+            p.sendMessage(ChatColor.RED+ LanguageManager.get("inventory_step_no_permission",true));
             e.setCancelled(true);
             return;
         }
@@ -65,9 +66,9 @@ public class BlockListener implements Listener {
 
             if(!p.isSneaking()) { //潜行模式限定
                 if(e.getAction()==Action.RIGHT_CLICK_BLOCK)
-                    p.sendMessage(ChatColor.RED + "这个箱子已经上锁，不能直接打开！请按SHIFT键后右键箱子，输入密码打开！");
+                    p.sendMessage(ChatColor.RED + LanguageManager.get("block_step_tip_open_right",true));
                 if(e.getAction()==Action.LEFT_CLICK_BLOCK)
-                    p.sendMessage(ChatColor.RED + "这个箱子已经上锁，不能直接拆除！请先按SHIFT键后左键箱子，输入密码以清除密码！");
+                    p.sendMessage(ChatColor.RED + LanguageManager.get("block_step_tip_break_right",true));
                 e.setCancelled(true);
                 return;
             }
@@ -121,7 +122,7 @@ public class BlockListener implements Listener {
         Player p=e.getPlayer();
 
         if(!canPlayerUse(p)) {
-            p.sendMessage(ChatColor.RED+"您没有权限使用箱子锁！");
+            p.sendMessage(ChatColor.RED+ LanguageManager.get("inventory_step_no_permission",true));
             e.setCancelled(true);
             return;
         }
@@ -131,10 +132,10 @@ public class BlockListener implements Listener {
         if(ChestPasswordManager.isChestSetPassword(b)){
             if(p.isOp() && ConfigManager.isOPFreedomMode()){
                 ChestPasswordManager.removeChestPassword(b);
-                p.sendMessage(ChatColor.GREEN+"您已用OP权限暴力拆除了上锁的箱子。");
+                p.sendMessage(ChatColor.GREEN+LanguageManager.get("block_step_tip_break_by_op_permission",true));
                 return;
             }
-            p.sendMessage(ChatColor.RED+"你不能拆除设有密码的箱子！请先按住SHIFT键左键箱子，清除密码！");
+            p.sendMessage(ChatColor.RED+LanguageManager.get("block_step_tip_break_right",true));
             e.setCancelled(true);
         }
     }
